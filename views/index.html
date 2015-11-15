@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html ng-app="IndexModule">
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Wandoujia Crawler</title>
+  {% include "common.html" %}
+  <style>
+    .table-row td {
+      line-height: 60px !important;
+      text-align: center;
+    }
+  </style>
+</head>
+<body ng-controller="IndexController">
+
+  <button class="btn btn-info" type="button" ng-click="startCrawler()">Start Crawler</button>
+
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>App Logo</th>
+          <th>App name</th>
+          <th>App description</th>
+          <th>Package name</th>
+          <th>Operation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="app in appTopList" class="table-row">
+          <td>
+            <img ng-src="{{ app.imgUrl }}" width="60px" height="60px"/>
+          </td>
+          <td ng-bind="app.appName"></td>
+          <td ng-bind="app.appDesc"></td>
+          <td ng-bind="app.packageName"></td>
+          <td>
+            <a href="{{ app.detailUrl }}" target="_blank">
+              redirect to the page
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+<script type="text/javascript">
+
+
+  var app = angular.module("IndexModule", []);
+
+  app.controller("IndexController", function($scope, $http) {
+
+    $scope.startCrawler = function() {
+      $http.post("/crawler")
+        .success(function(resp) {
+          if(resp.success) {
+            $scope.appTopList = resp.data;
+          } else {
+            alert("something wrong");
+          }
+        })
+        .error(function() {
+          alert("error");
+        });
+    }
+
+  });
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "nodejs-crawler-wandoujia",
+  "version": "1.0.0",
+  "description": "a crawler for wandoujia using nodejs, display data using express framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "crawler",
+    "express"
+  ],
+  "author": "format.fang",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.4.7",
+    "bootstrap": "^3.3.5",
+    "cheerio": "^0.19.0",
+    "eventproxy": "^0.3.4",
+    "express": "^4.13.3",
+    "jquery": "^2.1.4",
+    "superagent": "^1.4.0",
+    "swig": "^1.4.2"
+  }
+}

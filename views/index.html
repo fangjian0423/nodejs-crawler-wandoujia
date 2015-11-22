@@ -15,6 +15,12 @@
 
   <button class="btn btn-info" type="button" ng-click="startCrawler()">Start Crawler</button>
 
+  {% if error %}
+    <div class="error">
+      something error.
+    </div>
+  {% endif %}
+
   <div class="table-responsive">
     <table class="table table-bordered">
       <thead>
@@ -29,13 +35,13 @@
       <tbody>
         <tr ng-repeat="app in appTopList" class="table-row">
           <td>
-            <img ng-src="{{ app.imgUrl }}" width="60px" height="60px"/>
+            <img ng-src="{{ app.logo }}" width="60px" height="60px"/>
           </td>
-          <td ng-bind="app.appName"></td>
-          <td ng-bind="app.appDesc"></td>
+          <td ng-bind="app.name"></td>
+          <td ng-bind="app.desc"></td>
           <td ng-bind="app.packageName"></td>
           <td>
-            <a href="{{ app.detailUrl }}" target="_blank">
+            <a href="http://www.wandoujia.com/apps/{{ app.packageName }}" target="_blank">
               redirect to the page
             </a>
           </td>
@@ -52,11 +58,25 @@
 
   app.controller("IndexController", function($scope, $http) {
 
+    $scope.getData = function() {
+      $http.get("/getApps").success(function(resp) {
+        if(resp.success) {
+          $scope.appTopList = resp.data;
+        } else {
+          alert("something wrong");
+        }
+      });
+    }
+
+    angular.element(document).ready(function() {
+      $scope.getData();
+    });
+
     $scope.startCrawler = function() {
       $http.post("/crawler")
         .success(function(resp) {
           if(resp.success) {
-            $scope.appTopList = resp.data;
+            $scope.getData();
           } else {
             alert("something wrong");
           }

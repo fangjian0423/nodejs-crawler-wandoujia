@@ -14,7 +14,8 @@ app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
+app.use("/bower_components", express.static(__dirname + '/bower_components'));
 
 app.get('/getApps', function(req, res) {
   db.App.find(function(err, apps) {

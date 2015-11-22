@@ -1,0 +1,31 @@
+{
+  "name": "nodejs-crawler-wandoujia",
+  "description": "a crawler for wandoujia using nodejs, display data using express framework",
+  "main": "index.js",
+  "authors": [
+    "format.fang"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "nodejs",
+    "crawler",
+    "express"
+  ],
+  "homepage": "https://github.com/fangjian0423/nodejs-crawler-wandoujia",
+  "moduleType": [
+    "amd"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "angular": "~1.4.8",
+    "bootstrap": "~3.3.5"
+  }
+}

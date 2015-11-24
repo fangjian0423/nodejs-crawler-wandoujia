@@ -12,10 +12,12 @@ var app = express();
 
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
-app.set('views', __dirname + '/views');
+//app.set('views', __dirname + '/views'); // develop
+app.set('views', __dirname + '/dist/html'); // production
 
-app.use(express.static(__dirname + '/public'));
 app.use("/bower_components", express.static(__dirname + '/bower_components'));
+//app.use("/dist", express.static(__dirname + '/public')); // develop
+app.use("/dist", express.static(__dirname + '/dist')); // production
 
 app.get('/getApps', function(req, res) {
   db.App.find(function(err, apps) {

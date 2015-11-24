@@ -4,16 +4,14 @@
   <meta charset="UTF-8">
   <title>Wandoujia Crawler</title>
   {% include "common.html" %}
-  <style>
-    .table-row td {
-      line-height: 60px !important;
-      text-align: center;
-    }
-  </style>
+  <link rel="stylesheet" href="/dist/css/index.css"/>
 </head>
 <body ng-controller="IndexController">
 
-  <button class="btn btn-info" type="button" ng-click="startCrawler()">Start Crawler</button>
+  <div>
+    <img src="/dist/images/avatar.jpg" height="100px"/>
+    <button class="btn btn-info" type="button" ng-click="startCrawler()">Start Crawler</button>
+  </div>
 
   {% if error %}
     <div class="error">
@@ -50,46 +48,7 @@
     </table>
   </div>
 
-
-<script type="text/javascript">
-
-
-  var app = angular.module("IndexModule", []);
-
-  app.controller("IndexController", function($scope, $http) {
-
-    $scope.getData = function() {
-      $http.get("/getApps").success(function(resp) {
-        if(resp.success) {
-          $scope.appTopList = resp.data;
-        } else {
-          alert("something wrong");
-        }
-      });
-    }
-
-    angular.element(document).ready(function() {
-      $scope.getData();
-    });
-
-    $scope.startCrawler = function() {
-      $http.post("/crawler")
-        .success(function(resp) {
-          if(resp.success) {
-            $scope.getData();
-          } else {
-            alert("something wrong");
-          }
-        })
-        .error(function() {
-          alert("error");
-        });
-    }
-
-  });
-
-</script>
-
+<script type="text/javascript" src="/dist/js/index.js"></script>
 
 </body>
 </html>

@@ -4,6 +4,10 @@ var superagent = require('superagent');
 var cheerio = require('cheerio');
 var utils = require("./utils")
 
+
+var settings = require('./settings');
+
+
 var db = require('./models/db');
 
 swig.setDefaults({ varControls: ['<%=', '%>'] });
@@ -12,12 +16,10 @@ var app = express();
 
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
-//app.set('views', __dirname + '/views'); // develop
-app.set('views', __dirname + '/dist/html'); // production
+app.set('views', __dirname + settings.htmlDir);
 
 app.use("/bower_components", express.static(__dirname + '/bower_components'));
-//app.use("/dist", express.static(__dirname + '/public')); // develop
-app.use("/dist", express.static(__dirname + '/dist')); // production
+app.use("/dist", express.static(__dirname + settings.staticDir));
 
 app.get('/getApps', function(req, res) {
   db.App.find(function(err, apps) {

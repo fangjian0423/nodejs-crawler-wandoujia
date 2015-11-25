@@ -14,12 +14,14 @@ swig.setDefaults({ varControls: ['<%=', '%>'] });
 
 var app = express();
 
+var activeProfile = settings.activeProfile;
+
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
-app.set('views', __dirname + settings.htmlDir);
+app.set('views', __dirname + settings[activeProfile]["htmlDir"]);
 
 app.use("/bower_components", express.static(__dirname + '/bower_components'));
-app.use("/dist", express.static(__dirname + settings.staticDir));
+app.use("/dist", express.static(__dirname + settings[activeProfile]["staticDir"]));
 
 app.get('/getApps', function(req, res) {
   db.App.find(function(err, apps) {

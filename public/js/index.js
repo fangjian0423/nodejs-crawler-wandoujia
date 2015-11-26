@@ -10,7 +10,7 @@ app.controller("IndexController", ['$scope', '$http', function($scope, $http) {
         alert("something wrong");
       }
     });
-  }
+  };
 
   angular.element(document).ready(function() {
     $scope.getData();
@@ -28,6 +28,6 @@ app.controller("IndexController", ['$scope', '$http', function($scope, $http) {
       .error(function() {
         alert("error");
       });
-  }
+  };
 
 }]);

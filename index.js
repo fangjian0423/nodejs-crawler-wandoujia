@@ -29,7 +29,7 @@ app.use("/dist", express.static(__dirname + settings[activeProfile]["staticDir"]
 app.get('/getApps', function(req, res) {
   db.App.find(function(err, apps) {
     if(err) {
-      res.json(utils.buildResp(false, err));
+      res.json(utils.buildErrResp(err));
     } else {
       res.json(utils.buildResp(true, null, [{"data": apps}]))
     }
@@ -50,7 +50,7 @@ app.post("/crawler", function(req, res) {
     .get("http://www.wandoujia.com/top/app")
     .end(function(err, resp) {
       if(err) {
-        return res.json(utils.buildResp(false, err));
+        return res.json(utils.buildErrResp(err));
       }
       var $ = cheerio.load(resp.text, {decodeEntities: false});
       var $liList = $("#j-top-list li");
@@ -68,7 +68,7 @@ app.post("/crawler", function(req, res) {
 
         db.App.findOne({packageName: pkgName}, function(err, app) {
           if(err) {
-            return res.json({success: 0, message: err});
+            return res.json(utils.buildErrResp(err));
           }
           var appDescEle = $li.find(".app-desc");
           var appName = appDescEle.find(".name").html();
@@ -87,7 +87,7 @@ app.post("/crawler", function(req, res) {
           }
           app.save(function(err, savedApp) {
             if(err) {
-              return res.json({success: 0, message: err});
+              return res.json(utils.buildErrResp(err));
             }
           });
         });

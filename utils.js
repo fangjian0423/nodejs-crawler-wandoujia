@@ -1,10 +1,7 @@
 module.exports = {
   buildResp: function(success, message, params) {
     if(!success) {
-      return {
-        success: false,
-        message: message
-      }
+      return this.buildErrResp(message);
     } else {
       var result = {
         success: true
@@ -17,6 +14,12 @@ module.exports = {
         });
       }
       return result;
+    }
+  },
+  buildErrResp: function(message) {
+    return {
+      success: false,
+      message: message
     }
   }
 };

@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
   settings = require("../settings");
-var db = mongoose.connect("mongodb://localhost/" + settings.db);
+
+var db = mongoose.connect("mongodb://localhost/" + settings[settings.activeProfile].db);
 
 var Schema = mongoose.Schema;
 

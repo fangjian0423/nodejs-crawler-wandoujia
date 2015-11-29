@@ -2,7 +2,10 @@ var express = require('express');
 var swig = require('swig');
 var superagent = require('superagent');
 var cheerio = require('cheerio');
-var utils = require("./utils")
+var utils = require("./utils");
+
+
+var EventProxy = require('eventproxy');
 
 
 var settings = require('./settings');
@@ -38,6 +41,11 @@ app.get("/", function(req, res) {
 });
 
 app.post("/crawler", function(req, res) {
+
+  var ep = new EventProxy();
+
+  var detailPages = [];
+
   superagent
     .get("http://www.wandoujia.com/top/app")
     .end(function(err, resp) {
@@ -59,6 +67,9 @@ app.post("/crawler", function(req, res) {
         var pkgName = $li.attr("data-pn");
 
         db.App.findOne({packageName: pkgName}, function(err, app) {
+          if(err) {
+            return res.json({success: 0, message: err});
+          }
           var appDescEle = $li.find(".app-desc");
           var appName = appDescEle.find(".name").html();
           var appDesc = appDescEle.find(".comment").html();
@@ -81,11 +92,55 @@ app.post("/crawler", function(req, res) {
           });
         });
 
+        detailPages.push("http://www.wandoujia.com/apps/" + pkgName);
 
       });
 
-      return res.json(utils.buildResp(true, null));
+      ep.after("detailPage", detailPages.length, function(detailPages) {
+
+        detailPages.forEach(function(detailPagePair) {
+          var url = detailPagePair[0];
+          var $detail = cheerio.load(detailPagePair[1]);
+
+          var pkgName = url.substring(url.lastIndexOf("/") + 1);
+
+          var downloadCount = $detail(".num-list i[itemprop=interactionCount]").attr("content").split(":")[1];
+
+          var tags = "";
+
+          $detail(".infos-list .tag-box a").each(function(idx, ele) {
+            tags += "," + $(ele).text();
+          });
+
+          tags = tags.substring(1);
+
+          db.App.findOne({packageName: pkgName}, function(err, app) {
+
+            if(!err && app) {
+              app.download = downloadCount;
+              app.tags = tags;
+              app.save(function(err, savedApp) {
+
+              });
+            }
+
+          });
+
+        });
+
+        return res.json(utils.buildResp(true, null));
+
+      });
+
+
+      detailPages.forEach(function(detailPageUrl) {
+        superagent.get(detailPageUrl).end(function(detailErr, detailResp) {
+          ep.emit("detailPage", [detailPageUrl, detailResp.text]);
+        });
+      });
+
     });
+
 });
 
 app.listen(3000, function(req, res) {

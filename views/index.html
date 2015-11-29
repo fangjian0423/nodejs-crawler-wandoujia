@@ -27,6 +27,8 @@
           <th>App name</th>
           <th>App description</th>
           <th>Package name</th>
+          <th>Download Count</th>
+          <th>Tags</th>
           <th>Operation</th>
         </tr>
       </thead>
@@ -38,6 +40,8 @@
           <td ng-bind="app.name"></td>
           <td ng-bind="app.desc"></td>
           <td ng-bind="app.packageName"></td>
+          <td ng-bind="app.download"></td>
+          <td ng-bind="app.tags"></td>
           <td>
             <a href="http://www.wandoujia.com/apps/{{ app.packageName }}" target="_blank">
               redirect to the page

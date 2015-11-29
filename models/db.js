@@ -9,7 +9,9 @@ var appSchema = new Schema({
   logo: String,
   name: String,
   desc: String,
-  packageName: String
+  packageName: String,
+  download: Number,
+  tags: String
 });
 
 exports.App = db.model("apps", appSchema);
